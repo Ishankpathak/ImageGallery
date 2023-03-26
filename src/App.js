@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { useState } from "react";
+import { sculptureList } from "./data.jsx";
+const App = () => {
+  const [index, setIndex] = useState(0);
+  const [showMore, setShowMore] = useState(false);
+  let sculpture = sculptureList[index];
 
-function App() {
+  function handlePreClick() {
+    setIndex(index - 1);
+  }
+
+  function handleNextClick() {
+    if (index === sculptureList.length - 1) {
+      return;
+    }
+    setIndex(index + 1);
+  }
+
+  function handleMoreClick() {
+    setShowMore(!showMore);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div>
+      <section className="main">
+        <div className="btn">
+        <button onClick={handlePreClick} disabled={index === 0}>
+          Previous
+        </button>
+        <button
+          onClick={handleNextClick}
+          disabled={index === sculptureList.length - 1}
         >
-          Learn React
-        </a>
-      </header>
+          Next
+        </button>
+        </div>
+        <h2>{sculpture.name}</h2>
+        <p>{sculpture.artist}</p>
+
+        <img src={sculpture.url} alt={sculpture.alternative} className="image" />
+        <button onClick={handleMoreClick}>{showMore ? "Hide" : "Show More"}</button>
+        {showMore && <p>{sculpture.description}</p>}
+      </section>
     </div>
   );
-}
+};
 
 export default App;
